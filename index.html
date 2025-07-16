@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Damaged Materials Identification and Traceability Report</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Oswald&family=Playfair+Display:wght@700&family=Raleway:wght@700&family=Source+Serif+Pro:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .report-container {
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .report-header {
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .report-header h1 {
+            font-family: 'Merriweather', serif;
+            color: #1a5f7a;
+            margin: 0;
+            font-size: 26px;
+            letter-spacing: 1px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .form-section h2 {
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        /* Specific header styles */
+        #report-details-header {
+            font-family: 'Oswald', sans-serif;
+            color: #d35400;
+        }
+
+        #material-info-header {
+            font-family: 'Playfair+Display', serif;
+            color: #8e44ad;
+        }
+
+        #damage-identification-header {
+            font-family: 'Raleway', sans-serif;
+            color: #c0392b;
+        }
+
+        #receiving-details-header {
+            font-family: 'Source+Serif+Pro', serif;
+            color: #27ae60;
+        }
+
+        #qa-actions-header {
+            font-family: 'Oswald', sans-serif;
+            color: #2980b9;
+        }
+
+        #signatures-header {
+            font-family: 'Playfair+Display', serif;
+            color: #34495e;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        input[type="text"], 
+        input[type="date"], 
+        input[type="number"], 
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .checkbox-group {
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group label {
+            display: inline-block;
+            margin-right: 15px;
+            font-weight: normal;
+        }
+
+        .section-print-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background-color: #00008B;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .section-print-buttons button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .section-print-buttons button:hover {
+            background-color: #2980b9;
+        }
+
+        #printAllButton {
+            background-color: #28a745;
+        }
+
+        #printAllButton:hover {
+            background-color: #218838;
+        }
+
+        #questionableConditionDetails {
+            display: none;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        @media print {
+            body {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .report-container {
+                box-shadow: none;
+            }
+
+            .section-print-buttons {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <div class="report-header">
+            <h1>Damaged Materials Identification and Traceability Report</h1>
+        </div>
+
+        <div class="section-print-buttons">
+            <div>
+                <button onclick="printSection('production-details')">
+                    <i class="fas fa-print"></i> Print Production Details
+                </button>
+                <button onclick="printSection('receiving-details')">
+                    <i class="fas fa-print"></i> Print Receiving Details
+                </button>
+                <button onclick="printSection('qa-actions')">
+                    <i class="fas fa-print"></i> Print QA Actions
+                </button>
+            </div>
+            <div>
+                <button id="printAllButton" onclick="printEntireReport()">
+                    <i class="fas fa-print"></i> Print Entire Report
+                </button>
+            </div>
+        </div>
+
+        <form id="damagedMaterialsReport">
+            <div id="production-details">
+                <div class="form-section">
+                    <h2 id="report-details-header">Report Details</h2>
+                    <label>Date of Report:</label>
+                    <input type="date" name="reportDate">
+                    
+                    <label>Reported By:</label>
+                    <input type="text" name="reportedBy">
+                    
+                    <label>Department:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="department" value="Production"> Production</label>
+                        <label><input type="checkbox" name="department" value="Receiving"> Receiving</label>
+                        <label><input type="checkbox" name="department" value="QualityControl"> Quality Control</label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 id="material-info-header">Material Information</h2>
+                    <label>Material Number/Name:</label>
+                    <input type="text" name="materialName">
+                    
+                    <label>Lot/Batch Number:</label>
+                    <input type="text" name="lotNumber">
+                    
+                    <label>Supplier:</label>
+                    <input type="text" name="supplier">
+                </div>
+
+                <div class="form-section">
+                    <h2 id="damage-identification-header">Damage Identification</h2>
+                    <label>Type of Damage:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="damageType" value="PhysicalDamage"> Physical Damage</label>
+                        <label><input type="checkbox" name="damageType" value="Contamination"> Contamination</label>
+                        <label><input type="checkbox" name="damageType" value="StructuralCompromise"> Structural Compromise</label>
+                        <label><input type="checkbox" name="damageType" value="Other"> Other</label>
+                    </div>
+                    
+                    <label>Specify Other Damage Type (if applicable):</label>
+                    <input type="text" name="otherDamageType">
+                    
+                    <label>Description of Damage:</label>
+                    <input type="text" name="damageLocation">
+                    
+                    <label>Amount of Material Affected (lbs):</label>
+                    <input type="number" name="damagePercentage" min="0" max="100">
+                </div>
+            </div>
+
+            <div id="receiving-details" class="form-section">
+                <h2 id="receiving-details-header">Receiving Department Follow-Up</h2>
+                <label>Receiving Inspector Name:</label>
+                <input type="text" name="receivingInspector">
+                
+                <label>Initial Receipt Condition:</label>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" name="receiptCondition" value="Acceptable">
+                        <span>Acceptable</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="receiptCondition" value="Questionable">
+                        <span>Questionable</span>
+                    </label>
+                </div>
+
+                <div id="questionableConditionDetails">
+                    <label><strong>Explain Questionable Condition:</strong></label>
+                    <textarea name="questionableConditionExplanation" rows="3" placeholder="Describe the specific concerns that make this material's condition questionable"></textarea>
+                    
+                    <label>Approved By (Name and Position):</label>
+                    <input type="text" name="questionableConditionApprover" placeholder="Name of Approving Manager/Supervisor">
+                </div>
+
+                <label>Original Receive Date:</label>
+                <input type="date" name="receiveDate">
+            </div>
+
+
+
+
+            
+            <div id="qa-actions">
+                <div class="form-section">
+                    <h2 id="qa-actions-header">QA Actions</h2>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" name="recommendedAction" value="ReturnToSupplier">
+                            <span>Return to Supplier</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="recommendedAction" value="Quarantine">
+                            <span>Quarantine</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="recommendedAction" value="Dispose">
+                            <span>Dispose</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="recommendedAction" value="PartialUse">
+                            <span>Partial Use (with restrictions)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 id="signatures-header">Signatures</h2>
+                    <label>Production Representative:</label>
+                    <input type="text" name="productionSignature" placeholder="Signature">
+                    
+                    <label>Receiving Department:</label>
+                    <input type="text" name="receivingSignature" placeholder="Signature">
+                    
+                    <label>Quality Control Manager:</label>
+                    <input type="text" name="qualityControlSignature" placeholder="Signature">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('damagedMaterialsReport');
+            const questionableConditionDetails = document.getElementById('questionableConditionDetails');
+            
+            // Single-choice checkbox groups
+            const singleChoiceGroups = ['department', 'receiptCondition'];
+            singleChoiceGroups.forEach(groupName => {
+                const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        checkboxes.forEach(cb => {
+                            if (cb !== this) cb.checked = false;
+                        });
+
+                        // Show/hide questionable condition details
+                        if (groupName === 'receiptCondition' && this.value === 'Questionable') {
+                            questionableConditionDetails.style.display = this.checked ? 'block' : 'none';
+                        }
+                    });
+                });
+            });
+
+            // Dynamic input validation
+            const inputs = form.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    this.style.borderColor = this.value ? '#3498db' : '#e9ecef';
+                });
+            });
+        });
+
+        function printSection(sectionId) {
+            const printButtons = document.querySelector('.section-print-buttons');
+            printButtons.style.display = 'block';
+
+            const originalDisplays = [];
+
+            document.querySelectorAll('#production-details, #receiving-details, #qa-actions').forEach(section => {
+                if (section.id !== sectionId) {
+                    originalDisplays.push({ el: section, display: section.style.display });
+                    section.style.display = 'none';
+                }
+            });
+
+            window.print();
+
+            printButtons.style.display = 'flex';
+            originalDisplays.forEach(({ el, display }) => {
+                el.style.display = display;
+            });
+        }
+
+        function printEntireReport() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
