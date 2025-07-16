@@ -19,8 +19,12 @@
       position: relative;
     }
     .logo {
-      width: 150px;
+      width: 200px;
+      height: 100px;
       margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
     h1 {
       font-size: 2.5em;
@@ -61,7 +65,6 @@
       font-size: 1em;
       cursor: pointer;
     }
-
     @media print {
       button {
         display: none;
@@ -73,23 +76,36 @@
   </style>
 </head>
 <body>
-
 <div class="certificate">
-  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/6a/The_J.M._Smucker_Co._logo.svg/2560px-The_J.M._Smucker_Co._logo.svg.png" class="logo" alt="Smucker Logo">
-
+  <svg class="logo" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Purple leaf -->
+    <ellipse cx="180" cy="60" rx="25" ry="45" fill="#a64d79" transform="rotate(-45 180 60)"/>
+    
+    <!-- Teal leaf -->
+    <ellipse cx="220" cy="60" rx="25" ry="45" fill="#2db5a5" transform="rotate(-15 220 60)"/>
+    
+    <!-- Light green leaf -->
+    <ellipse cx="250" cy="80" rx="25" ry="45" fill="#9bc53d" transform="rotate(15 250 80)"/>
+    
+    <!-- Red/orange fruit -->
+    <ellipse cx="160" cy="95" rx="35" ry="40" fill="#e53e3e" transform="rotate(-15 160 95)"/>
+    
+    <!-- Yellow center -->
+    <ellipse cx="200" cy="85" rx="30" ry="35" fill="#d4d435" transform="rotate(0 200 85)"/>
+    
+    <!-- Company name -->
+    <text x="200" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#000">
+      THE J.M. SMUCKER Co
+    </text>
+  </svg>
   <h1>Certificate of Completion</h1>
   <p>This certifies that</p>
-
   <input type="text" placeholder="Full Name" id="name">
-
   <p>has successfully completed the</p>
   <p><strong>Powered Industrial Vehicle (PIV) Safety Training</strong></p>
-
   <p class="label">Date:</p>
   <input type="text" placeholder="MM/DD/YYYY" id="date">
-
   <p class="label">at The J.M. Smucker Co.</p>
-
   <div class="signatures">
     <div class="signature-block">
       <input type="text" placeholder="Instructor Name" id="instructor">
@@ -100,11 +116,9 @@
       <p>Department Manager</p>
     </div>
   </div>
-
   <div class="footer">
-    “Do the Right Thing. Be Bold. Play to Win. Thrive Together. Be Kind.”
+    "Do the Right Thing. Be Bold. Play to Win. Thrive Together. Be Kind."
   </div>
-
   <button onclick="window.print()">Print Certificate</button>
 </div>
 
